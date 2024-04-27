@@ -34,7 +34,6 @@ function BenefitBox(props) {
         style={{
           fontSize: 20,
           fontWeight: 700,
-          color: "black",
           color: isHovered ? "rgb(253, 126, 20)" : "black",
         }}
       >

@@ -1,21 +1,125 @@
 import React, { useState } from "react";
-import { useMediaQuery } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-function Navbar() {
-  const isMobile = useMediaQuery("(max-width:768px)");
-  const isLaptop = useMediaQuery("(max-width:1250px)");
+import Login from "./Login";
+import Register from "./Register";
 
+// Modal Component
+// Modal Component
+const Modal = ({ isOpen, onClose, selectedType, handleType }) => {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        display: isOpen ? "block" : "none",
+        zIndex: 5,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          width: 500,
+          padding: 20,
+          borderRadius: 10,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          border: '3px solid rgb(3, 192, 180)',
+          maxWidth: '90vw',
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <CloseIcon onClick={onClose} />
+        </div>
+
+        <div style={{ display: "flex", gap: 8, flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 20,
+              fontSize: 24,
+              fontWeight: 600,
+            }}
+          >
+            <div onClick={() => handleType("login")}>Login</div>
+            <div onClick={() => handleType("register")}>Register</div>
+          </div>
+
+          <div
+            style={{
+              width: "100%",
+              height: 1.2,
+              backgroundColor: "#DEDEDE",
+              display: "flex",
+              flexDirection: "row",
+              gap: 15,
+            }}
+          >
+            <div
+              style={{
+                width: 65,
+                height: 1.2,
+                backgroundColor: selectedType === 'login'?"rgb(3, 192, 180)":'#DEDEDE',
+              }}
+            ></div>
+            <div
+              style={{
+                width: 90,
+                height: 1.2,
+                backgroundColor: selectedType === 'register'?"rgb(3, 192, 180)":'#DEDEDE',
+              }}
+            ></div>
+          </div>
+          {selectedType === "login" ? (
+            <div style={{}}>
+              <Login />
+            </div>
+          ) : (
+            <div style={{}}>
+              <Register />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+function NavbarComponent({ isMobileView }) {
   const [isHomeHovered, setIsHomeHovered] = useState(false);
   const [isAboutHovered, setIsAboutHovered] = useState(false);
   const [isDoctorsHovered, setIsDoctorsHovered] = useState(false);
   const [isContactHovered, setIsContactHovered] = useState(false);
   const [isFindUsHovered, setIsFindUsHovered] = useState(false);
   const [sideBar, setSideBar] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState("login");
 
   const handleSideBar = () => {
-    sideBar === true ? setSideBar(false) : setSideBar(true);
+    setSideBar(!sideBar);
   };
-  return !isLaptop && !isMobile ? (
+
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleType = (type) => {
+    setSelectedType(type);
+  };
+  return !isMobileView ? (
     <div style={styles.container}>
       <div style={styles.logoAndName}>
         <img src={require("../Images/SJ_VISION_LOGO_MAIN.png")} alt="" />
@@ -90,90 +194,17 @@ function Navbar() {
             fontWeight: 500,
             fontSize: 18,
           }}
+          onClick={handleModal}
         >
-          Appointment
+          Log in/Sign up
         </div>
       </div>
-    </div>
-  ) : !isMobile ? (
-    <div style={styles.container}>
-      <div style={styles.logoAndName}>
-        <img src={require("../Images/SJ_VISION_LOGO_MAIN.png")} alt="" />
-        <div style={{ fontSize: 16, fontWeight: 700 }}>
-          SJ VISION FOUNDATION
-        </div>
-      </div>
-      <div style={styles.navItem}>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 500,
-            color: isHomeHovered ? "rgb(3, 192, 180)" : "black",
-          }}
-          onMouseEnter={() => setIsHomeHovered(true)}
-          onMouseLeave={() => setIsHomeHovered(false)}
-        >
-          Home
-        </div>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 500,
-            color: isAboutHovered ? "rgb(3, 192, 180)" : "black",
-          }}
-          onMouseEnter={() => setIsAboutHovered(true)}
-          onMouseLeave={() => setIsAboutHovered(false)}
-        >
-          About us
-        </div>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 500,
-            color: isDoctorsHovered ? "rgb(3, 192, 180)" : "black",
-          }}
-          onMouseEnter={() => setIsDoctorsHovered(true)}
-          onMouseLeave={() => setIsDoctorsHovered(false)}
-        >
-          Doctors
-        </div>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 500,
-            color: isContactHovered ? "rgb(3, 192, 180)" : "black",
-          }}
-          onMouseEnter={() => setIsContactHovered(true)}
-          onMouseLeave={() => setIsContactHovered(false)}
-        >
-          Contact
-        </div>
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 500,
-            color: isFindUsHovered ? "rgb(3, 192, 180)" : "black",
-          }}
-          onMouseEnter={() => setIsFindUsHovered(true)}
-          onMouseLeave={() => setIsFindUsHovered(false)}
-        >
-          Find us
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            backgroundColor: "#03c0b4",
-            padding: "17px 45px",
-            borderRadius: 50,
-            color: "#fff",
-            fontWeight: 500,
-            fontSize: 18,
-          }}
-        >
-          Appointment
-        </div>
-      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModal}
+        selectedType={selectedType}
+        handleType={handleType}
+      />
     </div>
   ) : (
     <div
@@ -323,7 +354,7 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default NavbarComponent;
 
 const styles = {
   container: {

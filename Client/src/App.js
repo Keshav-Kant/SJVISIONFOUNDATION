@@ -2,9 +2,9 @@ import './App.css';
 import DetailBar from './Components/DetailBar';
 import Footer from './Components/Footer';
 import HomePage from './Components/HomePage';
-import Navbar from './Components/Navbar';
 import SecondSection from './Components/SecondSection';
 import ThirdPage from './Components/ThirdPage';
+import Navbar from './Pages/Navbar';
 const whatsappIcon = require('./Images/whatsapp.png')
 function App() {
   return (
